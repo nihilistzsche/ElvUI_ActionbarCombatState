@@ -59,6 +59,7 @@ function ABCS:EnteringCombat()
 end
 
 function ABCS:LeavingCombat(force, x)
+	if UnitInVehicle('player') then return end
 	for i = 1, bars do
 		if E.db.actionbar.combatstate['bar' .. i]['enable'] then
 			E.db.actionbar['bar' .. i]['visibility'] = E.db.actionbar.combatstate['bar' .. i]['ooc']['visibility']
@@ -133,6 +134,19 @@ function ABCS:LeavingVehicle(_, unit)
 	if unit ~= 'player' then return end
 	if InCombatLockdown() or UnitAffectingCombat('player') or UnitAffectingCombat('pet') then return end
 	self:LeavingCombat()
+end
+
+function ABCS:UpdateOverrideBonusBar()
+	if HasOverrideActionBar() or HasBonusActionBar() then
+		if E.db.actionbar.combatstate['bar1']['enable'] then
+			E.db.actionbar['bar1']['visibility'] = E.db.actionbar.combatstate['bar1']['ic']['visibility']
+			E.db.actionbar['bar1']['mouseover'] = E.db.actionbar.combatstate['bar1']['ic']['mouseover']
+			E.db.actionbar['bar1']['alpha'] = E.db.actionbar.combatstate['bar1']['ic']['alpha']
+			self:UpdateBarSettings('bar1')
+		end
+	elseif not InCombatLockdown() and not UnitAffectingCombat('player') and not UnitAffectingCombat('pet') then
+		self:LeavingCombat()
+	end
 end
 
 function ABCS:MouseOverOption(i)
@@ -524,6 +538,8 @@ function ABCS:Initialize()
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'LeavingCombat')
 	self:RegisterEvent('UNIT_ENTERING_VEHICLE', 'EnteringVehicle')
 	self:RegisterEvent('UNIT_EXITING_VEHICLE', 'LeavingVehicle')
+	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'UpdateOverrideBonusBar')
+	self:RegisterEvent('UPDATE_BONUS_ACTIONBAR', 'UpdateOverrideBonusBar')
 	EP:RegisterPlugin(addon, ABCS.GetOptions)
 
 	for i = 1, bars do
@@ -532,6 +548,7 @@ function ABCS:Initialize()
 	end
 	self:UpdateHooks('barPet')
 	self:UpdateHooks('stanceBar')
+	self:UpdateOverrideBonusBar()
 end
 
 local function InitializeCallback() ABCS:Initialize() end
