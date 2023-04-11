@@ -38,20 +38,20 @@ end
 
 function ABCS:EnteringCombat()
 	for i = 1, bars do
-		if E.db.actionbar.combatstate['bar' .. i]['enable'] then
+		if E.db.actionbar.combatstate['bar' .. i]['enable'] and E.db.actionbar['bar' .. i]['enabled'] then
 			E.db.actionbar['bar' .. i]['visibility'] = E.db.actionbar.combatstate['bar' .. i]['ic']['visibility']
 			E.db.actionbar['bar' .. i]['mouseover'] = E.db.actionbar.combatstate['bar' .. i]['ic']['mouseover']
 			E.db.actionbar['bar' .. i]['alpha'] = E.db.actionbar.combatstate['bar' .. i]['ic']['alpha']
 			self:UpdateBarSettings('bar' .. i)
 		end
 	end
-	if E.db.actionbar.combatstate.barPet.enable then
+	if E.db.actionbar.combatstate.barPet.enable and E.db.actionbar.barPet.enabled then
 		E.db.actionbar.barPet['visibility'] = E.db.actionbar.combatstate.barPet['ic']['visibility']
 		E.db.actionbar.barPet['mouseover'] = E.db.actionbar.combatstate.barPet['ic']['mouseover']
 		E.db.actionbar.barPet['alpha'] = E.db.actionbar.combatstate.barPet['ic']['alpha']
 		self:UpdateBarSettings('barPet')
 	end
-	if E.db.actionbar.combatstate.stanceBar['enable'] then
+	if E.db.actionbar.combatstate.stanceBar['enable'] and E.db.actionbar.stanceBar.enabled then
 		E.db.actionbar.stanceBar['mouseover'] = E.db.actionbar.combatstate.stanceBar['ic']['mouseover']
 		E.db.actionbar.stanceBar['alpha'] = E.db.actionbar.combatstate.stanceBar['ic']['alpha']
 		self:UpdateBarSettings('stanceBar')
@@ -61,20 +61,20 @@ end
 function ABCS:LeavingCombat(force, x)
 	if UnitInVehicle('player') then return end
 	for i = 1, bars do
-		if E.db.actionbar.combatstate['bar' .. i]['enable'] then
+		if E.db.actionbar.combatstate['bar' .. i]['enable'] and E.db.actionbar['bar' .. i]['enabled'] then
 			E.db.actionbar['bar' .. i]['visibility'] = E.db.actionbar.combatstate['bar' .. i]['ooc']['visibility']
 			E.db.actionbar['bar' .. i]['mouseover'] = E.db.actionbar.combatstate['bar' .. i]['ooc']['mouseover']
 			E.db.actionbar['bar' .. i]['alpha'] = E.db.actionbar.combatstate['bar' .. i]['ooc']['alpha']
 			self:UpdateBarSettings('bar' .. i)
 		end
 	end
-	if E.db.actionbar.combatstate.barPet.enable then
+	if E.db.actionbar.combatstate.barPet.enable and E.db.actionbar.barPet.enabled then
 		E.db.actionbar.barPet['visibility'] = E.db.actionbar.combatstate.barPet['ooc']['visibility']
 		E.db.actionbar.barPet['mouseover'] = E.db.actionbar.combatstate.barPet['ooc']['mouseover']
 		E.db.actionbar.barPet['alpha'] = E.db.actionbar.combatstate.barPet['ooc']['alpha']
 		self:UpdateBarSettings('barPet')
 	end
-	if E.db.actionbar.combatstate.stanceBar['enable'] then
+	if E.db.actionbar.combatstate.stanceBar['enable'] and E.db.actionbar.stanceBar.enabled then
 		E.db.actionbar.stanceBar['mouseover'] = E.db.actionbar.combatstate.stanceBar['ooc']['mouseover']
 		E.db.actionbar.stanceBar['alpha'] = E.db.actionbar.combatstate.stanceBar['ooc']['alpha']
 		self:UpdateBarSettings('stanceBar')
